@@ -1,0 +1,229 @@
+<!--
+ * @Descripttion: 
+ * @version: 
+ * @Author: zj
+ * @Date: 2021-07-03 16:21:47
+ * @LastEditors: Andy
+ * @LastEditTime: 2021-07-04 19:13:12
+ * @FilePath: \05 JavaScript事件（二）\作业\碰撞.html
+-->
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <style>
+    div {
+      width: 100px;
+      height: 100px;
+    }
+
+    #d1 {
+      background-color: red;
+      position: absolute;
+    }
+
+    #d2 {
+      background-color: black;
+      position: absolute;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="d1"></div>
+  <div id="d2"></div>
+</body>
+<script>
+  var dd = document.documentElement;
+  var o1w, o2w, o1h, o2h, ww, hh, a1, a2, b1, b2, ol1, ot1, ol2, ot2;
+  // 获取页面宽高
+  var w = dd.clientWidth;
+  var h = dd.clientHeight;
+  // 获取第1个块的宽高
+  var ow1 = d1.offsetWidth;
+  var oh1 = d1.offsetHeight;
+  // 获取第2个块的宽高
+  var ow2 = d2.offsetWidth;
+  var oh2 = d2.offsetHeight;
+  // 设置随机数
+  function rand(a, b) {
+    return Math.ceil(Math.random() * (a - b));
+  }
+
+  function fa() {
+    d1.style.left = a1 + "px";
+    d1.style.top = a2 + "px";
+  };
+
+  function fn1() {
+    // 自定义1块位置坐标
+    a1 = rand(w, ow1);
+    a2 = rand(h, oh1);
+
+    fa();
+    // 获取1块到页面左边、顶部的距离
+    ol1 = d1.offsetLeft;
+    ot1 = d1.offsetTop;
+  };
+  fn1();
+
+  function fb() {
+    d2.style.left = b1 + "px";
+    d2.style.top = b2 + "px";
+  };
+
+  function fn2() {
+    // 自定义2块位置坐标
+    b1 = rand(w, ow2);
+    b2 = rand(h, oh2);
+    fb();
+
+    // 获取2块到页面左边、顶部的距离
+    ol2 = d2.offsetLeft;
+    ot2 = d2.offsetTop;
+    // 获取1块中心坐标
+    o1w = ol1 + (ow1 / 2);
+    o1h = ot1 + (oh1 / 2);
+    // 获取2块中心坐标
+    o2w = ol2 + (ow2 / 2);
+    o2h = ot2 + (oh2 / 2);
+    // 获取两个块中心的最小横竖距离
+    ww = (ow1 + ow2) / 2;
+    hh = (oh1 + oh2) / 2;
+    fnn();
+  };
+  fn2();
+
+  function fnn() {
+    if (Math.abs(o1w - o2w) <= ww && Math.abs(o1h - o2h) <= hh) {
+      fn1();
+      fn2();
+    };
+  };
+
+  var times;
+  d1.onmousedown = function () {
+    var e = e || window.event;
+    var x = e.offsetX;
+    var y = e.offsetY;
+    times = setInterval(function () {
+      // 获取2块到页面左边、顶部的距离
+      ol2 = d2.offsetLeft;
+      ot2 = d2.offsetTop;
+      // 获取2块中心坐标
+      o2w = ol2 + (ow2 / 2);
+      o2h = ot2 + (oh2 / 2);
+    }, 10)
+
+    document.onmousemove = function (e) {
+      var oe = e || window.event;
+      var cx = oe.clientX;
+      var cy = oe.clientY;
+      a1 = cx - x;
+      a2 = cy - y;
+      d1.style.left = a1 + "px";
+      d1.style.top = a2 + "px";
+      o1w = a1 + (ow1 / 2);
+      o1h = a2 + (oh1 / 2);
+
+      var oh = Math.abs(o1h - o2h),
+        ow = Math.abs(o1w - o2w);
+      //判断1块在左边
+      if (o1w - o2w <= 0) {
+        // 判断1块在上边
+        if (o1h - o2h <= 0) {
+          if (oh < hh && ow < ww) {
+            b1 += ow;
+            b2 += oh;
+          }
+        } else {
+          if (oh < hh && ow < ww) {
+            b1 += ow;
+            b2 -= oh;
+          }
+        }
+      } else {
+        if (o1h - o2h <= 0) {
+          if (oh < hh && ow < ww) {
+            b1 -= ow;
+            b2 += oh;
+          }
+        } else {
+          if (oh < hh && ow < ww) {
+            b1 -= ow;
+            b2 -= oh;
+          }
+        }
+      }
+      fb();
+    };
+  };
+  d2.onmousedown = function () {
+    var e = e || window.event;
+    var x = e.offsetX;
+    var y = e.offsetY;
+    times = setInterval(function () {
+      // 获取1块到页面左边、顶部的距离
+      ol1 = d1.offsetLeft;
+      ot1 = d1.offsetTop
+      // 获取1块中心坐标
+      o1w = ol1 + (ow1 / 2);
+      o1h = ot1 + (oh1 / 2);
+    }, 10)
+
+    document.onmousemove = function (e) {
+      var oe = e || window.event;
+      var cx = oe.clientX;
+      var cy = oe.clientY;
+      b1 = cx - x;
+      b2 = cy - y;
+      d2.style.left = b1 + "px";
+      d2.style.top = b2 + "px";
+      o2w = b1 + (ow2 / 2);
+      o2h = b2 + (oh2 / 2);
+
+      var oh = Math.abs(o1h - o2h),
+        ow = Math.abs(o1w - o2w);
+      //判断1块在左边
+      if (o1w - o2w >= 0) {
+        // 判断1块在上边
+        if (o1h - o2h >= 0) {
+          if (oh <= hh && ow <= ww) {
+            a1 += ow;
+            a2 += oh;
+          }
+        } else {
+          if (oh <= hh && ow <= ww) {
+            a1 += ow;
+            a2 -= oh;
+          }
+        }
+      } else {
+        if (o1h - o2h >= 0) {
+          if (oh <= hh && ow <= ww) {
+            a1 -= ow;
+            a2 += oh;
+          }
+        } else {
+          if (oh <= hh && ow <= ww) {
+            a1 -= ow;
+            a2 -= oh;
+          }
+        }
+      }
+
+      fa();
+    };
+  };
+
+  onmouseup = function () {
+    document.onmousemove = null;
+    clearInterval(times);
+  };
+</script>
+
+
+</html>

@@ -1,0 +1,73 @@
+<!--
+ * @Descripttion: 
+ * @version: 
+ * @Author: zj
+ * @Date: 2021-07-03 10:45:53
+ * @LastEditors: Andy
+ * @LastEditTime: 2021-07-03 16:19:18
+ * @FilePath: \05 JavaScript事件（二）\作业\网页自定义右键菜单.html
+-->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <style>
+    ul {
+      display: none;
+      width: 200px;
+      list-style: none;
+      position: fixed;
+      border: 1px solid;
+      padding: 0;
+    }
+
+    li {
+      line-height: 30px;
+      padding-left: 20px;
+    }
+
+    li:hover {
+      background-color: gray;
+    }
+  </style>
+</head>
+
+<body>
+  <ul>
+    <li>返回</li>
+    <li>复制链接</li>
+    <li>前进</li>
+    <li>加载</li>
+    <li>检查</li>
+  </ul>
+  <script>
+    var ul_ = document.getElementsByTagName('ul')[0],
+      dd = document.documentElement;
+    dd.oncontextmenu = function (e) {
+      var e = e || event;
+      // 移除默认事件
+      e.preventDefault(); //兼容非ie
+      e.returnValue = false; //兼容ie
+
+      ul_.style.display = 'block';
+      var x = e.offsetX;
+      var y = e.offsetY;
+      var maxX = dd.clientWidth - ul_.offsetWidth;
+      var maxY = dd.clientHeight - ul_.offsetHeight;
+      
+      x >= maxX ? x = x - ul_.offsetWidth : x = x;
+      y >= maxY ? y = y - ul_.offsetHeight : y = y;
+
+      ul_.style.left = x + 'px';
+      ul_.style.top = y + 'px';
+    }
+    dd.onclick = function () {
+      ul_.style.display = 'none';
+    }
+  </script>
+</body>
+
+</html>

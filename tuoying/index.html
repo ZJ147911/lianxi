@@ -1,0 +1,74 @@
+<!--
+ * @Descripttion: 
+ * @version: 
+ * @Author: zj
+ * @Date: 2021-07-03 16:24:27
+ * @LastEditors: Andy
+ * @LastEditTime: 2021-07-05 08:31:06
+ * @FilePath: \05 JavaScript事件（二）\作业\拖影.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>拖影</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    li {
+      list-style: none;
+      border-radius: 50%;
+      position: absolute;
+      left: 100px;
+      top: 100px;
+    }
+  </style>
+</head>
+
+<body>
+  <ul id="ul"></ul>
+  <script>
+    var lis = [];
+    for (var i = 0; i < 30; i++) {
+      lis[i] = document.createElement('li');
+      ul.appendChild(lis[i]);
+    }
+    // 设置随机数
+    function rand(min, max) {
+      return parseInt(Math.random() * (max - min + 1) + min);
+    }
+    for (var i = 0; i < lis.length; i++) {
+      // 设置背景色
+      lis[i].style.backgroundColor = 'rgb(' + rand(0, 255) + ',' + rand(0, 255) + ',' + rand(0, 255) + ')';
+      // 设置大小
+      // lis[i].style.width =  100 + 'px';
+      // lis[i].style.height =  100 + 'px';
+      lis[i].style.width = i * 3 + 'px';
+      lis[i].style.height = i * 3 + 'px';
+    }
+    document.onmousemove = function (e) {
+      var e = e || window.event;
+      for (var i = 0; i < lis.length; i++) {
+        // 设置背景色
+        lis[i].style.backgroundColor = 'rgb(' + rand(0, 255) + ',' + rand(0, 255) + ',' + rand(0, 255) + ')';
+      }
+      var i = -1;
+      var time = setInterval(function () {
+        i++;
+        if (i >= lis.length - 1) {
+          clearInterval(time);
+        }
+        lis[i].style.left = e.clientX  + 'px';
+        lis[i].style.top = e.clientY+ 'px';
+        // lis[i].style.left = e.clientX - lis[i].clientWidth / 2 + 'px';
+        // lis[i].style.top = e.clientY - lis[i].clientHeight / 2 + 'px';
+      },100);
+    }
+  </script>
+</body>
+
+</html>

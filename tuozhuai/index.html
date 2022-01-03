@@ -1,0 +1,57 @@
+<!--
+ * @Descripttion: 
+ * @version: 
+ * @Author: zj
+ * @Date: 2021-07-03 14:48:12
+ * @LastEditors: Andy
+ * @LastEditTime: 2021-07-03 16:38:06
+ * @FilePath: \05 JavaScript事件（二）\作业\拖拽.html
+-->
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+  var div_ = document.createElement("div");
+  document.body.appendChild(div_);
+  div_.id = "box";
+  box.style =
+    "width:100px;height:100px;background-color: red;position: absolute;";
+
+  box.onmousedown = function (e) {
+    var e = e || window.event;
+    var x = e.offsetX;
+    var y = e.offsetY;
+    document.onmousemove = function (e) {
+      var oe = e || window.event;
+      var cx = oe.clientX;
+      var cy = oe.clientY;
+      var maxX = document.documentElement.clientWidth - box.offsetWidth;
+      var maxY = document.documentElement.clientHeight - box.offsetHeight;
+      console.log(x, y, cx, cy, maxX, maxY);
+
+      var t = cx - x;
+      t <= 0 ? (t = 0) : (t = t);
+      t >= maxX ? (t = maxX) : (t = t);
+
+      var s = cy - y;
+      s <= 0 ? (s = 0) : (s = s);
+      s >= maxY ? (s = maxY) : (s = s);
+      
+      box.style.left = t + "px";
+      box.style.top = s + "px";
+    };
+  };
+  box.onmouseup = function () {
+    document.onmousemove = null;
+  };
+</script>
+
+</html>
